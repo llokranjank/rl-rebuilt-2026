@@ -1,5 +1,5 @@
-import config
-from entities import Zone, Robot
+from . import config
+from .entities import Zone, Robot
 from typing import List, Dict
 
 class SimulationEngine:
@@ -139,22 +139,32 @@ class SimulationEngine:
             bot.current_zone_name = target # Arrived!
             
         elif action == "Shooting":
-            # Transfer balls Robot -> Hub -> Neutral
-            count = bot.inventory
+            # Transfer balls Robot -> Hub -> Neutral OR Return to Zone (Miss)
+            total_count = bot.inventory
             bot.inventory = 0
             
-            # Scoring
+            # Calculate Split
+            accuracy = getattr(bot, 'accuracy', 1.0)
+            scored_count = total_count * accuracy
+            missed_count = total_count - scored_count
+            
+            # 1. Handle SCORING (Scored Count)
             # Points count only if Alliance Hub is Active
             points = 0
             if bot.team == "Red" and self.red_hub_status == config.HUB_ACTIVE:
-                points = count
+                points = scored_count
                 self.red_score += points
             elif bot.team == "Blue" and self.blue_hub_status == config.HUB_ACTIVE:
-                points = count
+                points = scored_count
                 self.blue_score += points
             
-            # Recirculate to Neutral
-            self.zones[config.ZONE_NEUTRAL].balls += count
+            # Scored balls recirculate to Neutral
+            self.zones[config.ZONE_NEUTRAL].balls += scored_count
+            
+            # 2. Handle MISSES
+            # "If you miss, the ball is returned to zone that it is shot from."
+            # Which is bot.current_zone_name (Alliance Zone)
+            self.zones[bot.current_zone_name].balls += missed_count
             
         elif action == "Passing":
             # Transfer balls Robot -> Alliance Zone

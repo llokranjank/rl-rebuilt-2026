@@ -1,10 +1,10 @@
 experiment:
-  name: "Default_Experiment_01"
-  generations: 30
-  steps_per_gen: 100000  # Low number for quick demo
+  name: "default_convergence_Experiment_02"
+  generations: 50
+  steps_per_gen: 5000  # Low number for quick demo
   output_dir: "./experiments"
-  save_interval_gen: 5
-  analysis_interval_gen: 10
+  save_interval_gen: 10
+  analysis_interval_gen: 25
 
 robots:
   - id: 1

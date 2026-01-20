@@ -2,8 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.patches as patches
-import config
-from gym_env import LogisticsEnv
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from sim import config
+from sim.gym_env import LogisticsEnv
 from stable_baselines3 import PPO
 
 # --- Visual Constraints ---
@@ -41,7 +44,13 @@ def run_and_animate(model_path="ppo_logistics_v21_3v3", save_path="match_simulat
     time_limit = 0
     while not done and time_limit < 2000:
         if model:
-            action, _ = model.predict(obs, deterministic=True)
+            try:
+                action, _ = model.predict(obs, deterministic=True)
+            except ValueError as e:
+                print(f"Model prediction failed (likely shape mismatch): {e}")
+                print("Falling back to random actions for remainder of match.")
+                model = None
+                action = env.action_space.sample()
         else:
             action = env.action_space.sample()
             

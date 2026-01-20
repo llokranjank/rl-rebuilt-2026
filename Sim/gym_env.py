@@ -1,9 +1,9 @@
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
-import config
-from engine import SimulationEngine
-from entities import Robot
+from . import config
+from .engine import SimulationEngine
+from .entities import Robot
 from stable_baselines3 import PPO
 import os
 
@@ -103,8 +103,7 @@ class LogisticsEnv(gym.Env):
         if self.opponent_model:
             # Generate Blue View (Flipped)
             blue_obs = self._get_obs(team="Blue")
-            b_act, _ = self.opponent_model.predict(blue_obs, deterministic=True)
-            blue_actions = b_act
+            blue_actions, _ = self.opponent_model.predict(blue_obs, deterministic=True)
         else:
             # Fallback: Random or Simple Static
             # Let's just do random valid moves to avoid being totally dead

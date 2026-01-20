@@ -1,7 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import config
-from gym_env import LogisticsEnv
+import pandas as pd
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from sim.gym_env import LogisticsEnv
+from sim import config
 from stable_baselines3 import PPO
 
 def run_analysis(model_path="ppo_logistics_v21_3v3", save_path="match_analysis.png"):

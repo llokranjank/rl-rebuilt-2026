@@ -1,6 +1,6 @@
-from dataclasses import dataclass
-from typing import List, Optional
-import config
+from typing import List, Optional, Union, Dict
+import random
+from . import config
 
 class Zone:
     def __init__(self, name: str, initial_balls: int):
@@ -20,15 +20,16 @@ class Zone:
         return f"Zone({self.name}, balls={self.balls})"
 
 class Robot:
-    def __init__(self, team: str, id: int, capacity: int, transit_time: float, 
+    def __init__(self, team: str, id: int, capacity: int, transit_time: Union[float, Dict[str, float]], 
                  balls_shot_per_sec: float, intake_efficiency: float, start_zone: str, 
-                 initial_inventory: int = 0):
+                 initial_inventory: int = 0, accuracy: float = 1.0):
         self.team = team # 'Red' or 'Blue'
         self.id = id
         self.capacity = capacity
         self.transit_time = transit_time
         self.balls_shot_per_sec = balls_shot_per_sec
         self.intake_efficiency = max(0.0, min(1.0, intake_efficiency))
+        self.accuracy = max(0.0, min(1.0, accuracy))
         
         # State
         self.start_zone = start_zone
@@ -52,7 +53,19 @@ class Robot:
 
     def set_action_transit(self, target_zone: str):
         self.current_action = f"Moving to {target_zone}"
-        self.action_cooldown = self.transit_time
+        
+        # Calculate duration
+        duration = 0.0
+        if isinstance(self.transit_time, dict):
+            mean = self.transit_time.get('mean', 2.0)
+            std = self.transit_time.get('std', 0.0)
+            sample = random.gauss(mean, std)
+            # User request: Logic is max(mean, sample)
+            duration = max(mean, sample)
+        else:
+            duration = float(self.transit_time)
+            
+        self.action_cooldown = duration
         # Location update happens in Engine upon completion.
 
     def set_action_shoot(self):

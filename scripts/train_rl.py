@@ -1,4 +1,7 @@
-from gym_env import LogisticsEnv
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from sim.gym_env import LogisticsEnv
 from stable_baselines3 import PPO
 import os
 import shutil

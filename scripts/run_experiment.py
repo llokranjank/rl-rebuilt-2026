@@ -1,8 +1,10 @@
 import os
 import shutil
 import datetime
-import config
-from gym_env import LogisticsEnv
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from sim import config
+from sim.gym_env import LogisticsEnv
 from stable_baselines3 import PPO
 from plot_training import plot_training_curve
 from visualize_match import run_and_animate
@@ -13,7 +15,7 @@ import argparse
 def run_experiment():
     # 0. Parse CLI Arguments
     parser = argparse.ArgumentParser(description="Run Logistics Simulation Experiment")
-    parser.add_argument("-c", "--config", type=str, default="experiment_configs/default_experiment.yaml", help="Path to experiment config YAML")
+    parser.add_argument("-c", "--config", type=str, default="configs/defaultExperiment.yaml", help="Path to experiment config YAML")
     args = parser.parse_args()
     
     # Load Config
