@@ -1,0 +1,27 @@
+experiment:
+  name: "Default_Experiment_01"
+  generations: 30
+  steps_per_gen: 100000  # Low number for quick demo
+  output_dir: "./experiments"
+  save_interval_gen: 5
+  analysis_interval_gen: 10
+
+robots:
+  - id: 1
+    type: "Balanced"
+    capacity: 40
+    transit_time: 2.0
+    balls_shot_per_sec: 6.0
+    intake_efficiency: 1.0
+  - id: 2
+    type: "Balanced"
+    capacity: 40
+    transit_time: 2.0
+    balls_shot_per_sec: 6.0
+    intake_efficiency: 1.0
+  - id: 3
+    type: "Balanced"
+    capacity: 40
+    transit_time: 2.0
+    balls_shot_per_sec: 6.0
+    intake_efficiency: 1.0

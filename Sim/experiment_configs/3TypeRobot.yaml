@@ -1,0 +1,27 @@
+experiment:
+  name: "Demo_Experiment_YAML"
+  generations: 3
+  steps_per_gen: 5000  # Low number for quick demo
+  output_dir: "./experiments"
+  save_interval_gen: 1
+  analysis_interval_gen: 1
+
+robots:
+  - id: 1
+    type: "Speedster"
+    capacity: 30
+    transit_time: 2.0
+    balls_shot_per_sec: 8.0
+    intake_efficiency: 1.0
+  - id: 2
+    type: "Balanced"
+    capacity: 40
+    transit_time: 2.0
+    balls_shot_per_sec: 6.0
+    intake_efficiency: 1.0
+  - id: 3
+    type: "Heavy Hauler"
+    capacity: 60
+    transit_time: 3.0
+    balls_shot_per_sec: 5.0
+    intake_efficiency: 1.0
